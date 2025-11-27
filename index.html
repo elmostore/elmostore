@@ -143,6 +143,17 @@ const res = await fetch("/.netlify/functions/secure-api");
 const data = await res.json();
 document.getElementById("result").textContent = JSON.stringify(data, null, 2);
 };
+
+	fetch("/.netlify/functions/printful", {
+  method: "POST",
+  body: JSON.stringify({
+    type: "product",
+    payload: { id: 12345 }
+  })
+})
+.then(r => r.json())
+.then(console.log);
+
 </script>
   
     <!-- ====== Footer ====== -->
