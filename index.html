@@ -132,6 +132,18 @@
       <p>$24.99</p>
     </div>
   </section>
+	<h1>Test Secure API</h1>
+<button id="test">Run Function</button>
+<pre id="result"></pre>
+
+
+<script>
+document.getElementById("test").onclick = async () => {
+const res = await fetch("/.netlify/functions/secure-api");
+const data = await res.json();
+document.getElementById("result").textContent = JSON.stringify(data, null, 2);
+};
+</script>
   
     <!-- ====== Footer ====== -->
   <footer class="footer">
