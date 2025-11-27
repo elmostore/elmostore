@@ -1,0 +1,4 @@
+# Netlify configuration file
+[build]
+functions = "netlify/functions"
+publish = "."
