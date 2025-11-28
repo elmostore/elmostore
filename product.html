@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Product</title>
+</head>
+<body>
+  <a href="index.html">⬅ Back</a>
+  <div id="content"></div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const id = params.get("id");
+
+    async function load() {
+      const res = await fetch("/.netlify/functions/printful", {
+        method: "POST",
+        body: JSON.stringify({ type: "product", payload: { id } })
+      });
+
+      const data = await res.json();
+      const p = data.result.Product;
+
+      document.getElementById("content").innerHTML = `
+        <h1>${p.title}</h1>
+        <img src="${p.image}" width="300" />
+        <p>${p.description}</p>
+      `;
+    }
+
+    load();
+  </script>
+</body>
+</html>
+
