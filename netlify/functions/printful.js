@@ -1,35 +1,38 @@
 export async function handler(event) {
   const TOKEN = process.env.MY_SECRET_TOKEN;
-  const { type, payload } = JSON.parse(event.body || "{}");
+  const query = Object.fromEntries(new URLSearchParams(event.queryStringParameters));
+  const body = event.body ? JSON.parse(event.body) : {};
+  const type = body.type || query.type;
 
-  const call = async (endpoint, method = "GET", body = null) => {
-    const res = await fetch(`https://api.printful.com${endpoint}`, {
+  const call = async (ep, method="GET", payload=null) => {
+    const res = await fetch(`https://api.printful.com${ep}`, {
       method,
       headers: {
         "Authorization": `Bearer ${TOKEN}`,
         "Content-Type": "application/json"
       },
-      body: body ? JSON.stringify(body) : null
+      body: payload ? JSON.stringify(payload) : null
     });
-
     return res.json();
   };
 
+  // Auto store: get all products
+  if (type === "all_products") {
+    return {
+      statusCode: 200,
+      body: JSON.stringify(await call(`/products`))
+    };
+  }
+
+  // Single product
   if (type === "product") {
-    return { statusCode: 200, body: JSON.stringify(await call(`/products/${payload.id}`)) };
-  }
-
-  if (type === "tax") {
-    return { statusCode: 200, body: JSON.stringify(await call(`/tax/rates?country_code=${payload.country}`)) };
-  }
-
-  if (type === "shipping") {
-    return { statusCode: 200, body: JSON.stringify(await call(`/shipping/rates`, "POST", payload)) };
-  }
-
-  if (type === "create_order") {
-    return { statusCode: 200, body: JSON.stringify(await call(`/orders`, "POST", payload)) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify(await call(`/products/${body.payload.id}`))
+    };
   }
 
   return { statusCode: 400, body: JSON.stringify({ error: "Bad type" }) };
 }
+
+
