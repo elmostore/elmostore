@@ -17,9 +17,9 @@ img { width: 100%; border-radius: 6px; }
 
 <script>
 async function loadProducts() {
-const res = await fetch("/.netlify/functions/printful?type=api/getProducts");
+const res = await fetch("/.netlify/functions/printful?type=getProducts");
 const data = await res.json();
-  //all_products
+  //all_products api/getProducts
 
 
 const container = document.getElementById("products");
