@@ -1,59 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Printful Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Separated Files Example</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Printful Store Demo</h1>
 
-  <button id="getProduct">Get Product Info</button>
-  <button id="getTax">Get Tax</button>
-  <button id="getShipping">Get Shipping</button>
-  <button id="createOrder">Create Order</button>
+    <h1>Welcome!</h1>
 
-  <pre id="output"></pre>
+    <button id="payBtn">Pay Now</button>
 
-  <script>
-    const api = async (type, payload = {}) => {
-      const res = await fetch("/.netlify/functions/printful", {
-        method: "POST",
-        body: JSON.stringify({ type, payload })
-      });
-      return res.json();
-    };
-
-    document.getElementById("getProduct").onclick = async () => {
-      const data = await api("product", { id: 1 });
-      output.textContent = JSON.stringify(data, null, 2);
-    };
-
-    document.getElementById("getTax").onclick = async () => {
-      const data = await api("tax", { country: "US" });
-      output.textContent = JSON.stringify(data, null, 2);
-    };
-
-    document.getElementById("getShipping").onclick = async () => {
-      const data = await api("shipping", {
-        recipient: { country_code: "US" },
-        items: [{ variant_id: 4011, quantity: 1 }]
-      });
-      output.textContent = JSON.stringify(data, null, 2);
-    };
-
-    document.getElementById("createOrder").onclick = async () => {
-      const data = await api("create_order", {
-        recipient: {
-          name: "John Doe",
-          address1: "123 Street",
-          city: "NY",
-          zip: "10001",
-          country_code: "US"
-        },
-        items: [{ variant_id: 4011, quantity: 1 }]
-      });
-      output.textContent = JSON.stringify(data, null, 2);
-    };
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
