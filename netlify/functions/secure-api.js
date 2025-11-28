@@ -1,6 +1,6 @@
 // This file runs on Netlify server — token is safe
 export async function handler(event, context) {
-const token = process.env.MY_SECRET_TOKEN; // Loaded safely from Netlify
+const token = process.env.MY_SECRET_TOKEnnN; // Loaded safely from Netlify
 
 
 // Fake example request using the token
