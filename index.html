@@ -1,51 +1,34 @@
-<!DOCTYPE html>
+<!-- index.html -->
+<!doctype html>
 <html>
-<head>
-<meta charset="UTF-8" />
-<title>Auto Store</title>
-<style>
-body { font-family: Arial; padding: 20px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-.card { border: 1px solid #ccc; padding: 10px; border-radius: 8px; }
-img { width: 100%; border-radius: 6px; }
-</style>
-</head>
+<head><meta charset="utf-8"><title>My Products</title></head>
 <body>
-<h1>Printful Auto Store</h1>
-<div id="products" class="grid"></div>
+  <div id="products"></div>
 
+  <script>
+    // Fetch products from our Netlify Function
+    fetch('/.netlify/functions/get-products')
+      .then(r => r.json())
+      .then(data => {
+        const out = document.getElementById('products');
+        // Simple rendering; adapt to your product structure
+        if (!data || !data.result) { out.innerText = 'No products'; return; }
+        data.result.forEach(p => {
+          const div = document.createElement('div');
+          div.innerHTML = `
+            <h3>${p.name}</h3>
+            <img src="${p.thumbnail_url || ''}" width="120" />
+            <p>${p.description || ''}</p>
+            <button onclick="buy('${p.external_id || p.id}')">Buy</button>
+          `;
+          out.appendChild(div);
+        });
+      });
 
-<script>
-async function loadProducts() {
-const res = await fetch("/.netlify/functions/printful?type=all_products");
-const data = await res.json();
-  //all_products api/getProducts
-
-
-const container = document.getElementById("products");
-container.innerHTML = "";
-
-
-data.result.forEach(p => {
-const div = document.createElement("div");
-div.className = "card";
-div.innerHTML = `
-<img src="${p.thumbnail_url}" />
-<h3>${p.title}</h3>
-<p>${p.type_name}</p>
-<button onclick="view(${p.id})">View</button>
-`;
-container.appendChild(div);
-});
-}
-
-
-function view(id) {
-location.href = `product.html?id=${id}`;
-}
-
-
-loadProducts();
-</script>
+    function buy(productId) {
+      // Open product page or show options. We'll redirect to a quick checkout page.
+      window.location = `/checkout.html?prod=${encodeURIComponent(productId)}`;
+    }
+  </script>
 </body>
 </html>
