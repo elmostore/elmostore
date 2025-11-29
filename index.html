@@ -7,7 +7,7 @@
 
   <script>
     // Fetch products from our Netlify Function
-    fetch('/.netlify/functions/get-products')
+    fetch('/.netlify/functions/get-products.js')
       .then(r => r.json())
       .then(data => {
         const out = document.getElementById('products');
