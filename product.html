@@ -1,35 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <title>Product</title>
-</head>
+<head><meta charset="utf-8"><title>تفاصيل المنتج</title></head>
 <body>
-  <a href="index.html">⬅ Back</a>
-  <div id="content"></div>
+  <div id="product"></div>
 
-  <script>
-    const params = new URLSearchParams(location.search);
-    const id = params.get("id");
+  <script type="module">
+    import { getProduct } from './api-client.js'
 
-    async function load() {
-      const res = await fetch("/.netlify/functions/printful", {
-        method: "POST",
-        body: JSON.stringify({ type: "product", payload: { id } })
-      });
+    const params = new URLSearchParams(location.search)
+    const id = params.get("id")
 
-      const data = await res.json();
-      const p = data.result.Product;
+    const data = await getProduct(id)
 
-      document.getElementById("content").innerHTML = `
-        <h1>${p.title}</h1>
-        <img src="${p.image}" width="300" />
-        <p>${p.description}</p>
-      `;
-    }
+    const p = data.result
 
-    load();
+    document.getElementById("product").innerHTML = `
+      <h1>${p.name}</h1>
+      <img src="${p.thumbnail_url}" width="200">
+      <button onclick="addToCart(${p.id})">أضف للسلة</button>
+    `
   </script>
 </body>
 </html>
-
