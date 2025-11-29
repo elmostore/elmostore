@@ -4,7 +4,7 @@
 // This function fetches synced products from Printful using server-side secret.
 // It must NOT expose the API key to the browser.
 
-const fetch = require('node-fetch'); // Netlify supports node-fetch
+//const fetch = require('node-fetch'); // Netlify supports node-fetch
 exports.handler = async function(event, context) {
   const PRINTFUL_KEY = process.env.MY_SECRET_TOKEN;
   if (!PRINTFUL_KEY) {
