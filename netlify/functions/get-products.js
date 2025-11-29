@@ -13,7 +13,7 @@ exports.handler = async function(event, context) {
 
   try {
     // Example endpoint: GET /store/products (returns synced store products)
-    const res = await fetch('https://api.printful.com/store/products', {
+    const res = await fetch('/*https://api.printful.com/store/products*/https://api.printful.com/v2/stores/{store_id}', {
       headers: {
         'Authorization': `Bearer ${PRINTFUL_KEY}`,
         'Content-Type': 'application/json'
