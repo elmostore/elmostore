@@ -1,34 +1,29 @@
-<!-- index.html -->
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><title>My Products</title></head>
+<head>
+  <meta charset="utf-8">
+  <title>متجري</title>
+</head>
 <body>
+  <h1>المنتجات</h1>
   <div id="products"></div>
 
-  <script>
-    // Fetch products from our Netlify Function
-    fetch('/.netlify/functions/get-products.js')
-      .then(r => r.json())
-      .then(data => {
-        const out = document.getElementById('products');
-        // Simple rendering; adapt to your product structure
-        if (!data || !data.result) { out.innerText = 'No products'; return; }
-        data.result.forEach(p => {
-          const div = document.createElement('div');
-          div.innerHTML = `
-            <h3>${p.name}</h3>
-            <img src="${p.thumbnail_url || ''}" width="120" />
-            <p>${p.description || ''}</p>
-            <button onclick="buy('${p.external_id || p.id}')">Buy</button>
-          `;
-          out.appendChild(div);
-        });
-      });
+  <script type="module">
+    import { getProducts } from './api-client.js'
 
-    function buy(productId) {
-      // Open product page or show options. We'll redirect to a quick checkout page.
-      window.location = `/checkout.html?prod=${encodeURIComponent(productId)}`;
-    }
+    const container = document.getElementById("products")
+
+    const data = await getProducts()
+
+    data.result.forEach(p => {
+      const div = document.createElement("div")
+      div.innerHTML = `
+        <h3>${p.name}</h3>
+        <img src="${p.thumbnail_url}" width="150">
+        <a href="product.html?id=${p.id}">فتح</a>
+      `
+      container.appendChild(div)
+    })
   </script>
 </body>
 </html>
