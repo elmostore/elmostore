@@ -1,29 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-  <meta charset="utf-8">
-  <title>متجري</title>
+  <meta charset="UTF-8">
+  <title>المنتجات</title>
+  <style>
+    body { font-family: Arial; }
+    .product {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px;
+      width: 220px;
+      display: inline-block;
+      text-align: center;
+    }
+    img { width: 200px; border-radius: 6px; }
+  </style>
 </head>
 <body>
-  <h1>المنتجات</h1>
-  <div id="products"></div>
 
-  <script type="module">
-    import { getProducts } from './api-client.js'
+<h1>المنتجات</h1>
+<div id="products">جاري التحميل...</div>
 
-    const container = document.getElementById("products")
+<script>
+async function loadProducts() {
+  const res = await fetch("/.netlify/functions/get-products");
+  const data = await res.json();
 
-    const data = await getProducts()
+  console.log("DATA:", data);
 
-    data.result.forEach(p => {
-      const div = document.createElement("div")
-      div.innerHTML = `
-        <h3>${p.name}</h3>
-        <img src="${p.thumbnail_url}" width="150">
-        <a href="product.html?id=${p.id}">فتح</a>
-      `
-      container.appendChild(div)
-    })
-  </script>
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  if (!data.result || data.result.length === 0) {
+    container.innerHTML = "لا يوجد منتجات.";
+    return;
+  }
+
+  data.result.forEach(item => {
+    container.innerHTML += `
+      <div class="product">
+        <h3>${item.name}</h3>
+        <img src="${item.thumbnail_url}" alt="">
+      </div>
+    `;
+  });
+}
+
+loadProducts();
+</script>
+
 </body>
 </html>
