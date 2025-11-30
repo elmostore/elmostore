@@ -1,53 +1,46 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>المنتجات</title>
+  <meta charset="UTF-8" />
+  <title>My Printful Store</title>
   <style>
-    body { font-family: Arial; }
-    .product {
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin: 10px;
-      width: 220px;
-      display: inline-block;
-      text-align: center;
-    }
-    img { width: 200px; border-radius: 6px; }
+    body { font-family: Arial; max-width: 600px; margin: auto; }
+    input, select { width: 100%; padding: 10px; margin: 8px 0; }
+    button { padding: 12px; width: 100%; background: black; color: white; border: none; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
-<h1>المنتجات</h1>
-<div id="products">جاري التحميل...</div>
+<h2>Complete Your Order</h2>
 
-<script>
-async function loadProducts() {
-  const res = await fetch("/.netlify/functions/get-products");
-  const data = await res.json();
+<h3>Customer Info</h3>
+<input id="name" placeholder="Full Name">
+<input id="email" placeholder="Email">
+<input id="phone" placeholder="Phone">
 
-  console.log("DATA:", data);
+<h3>Address</h3>
+<select id="country"></select>
+<select id="state" class="hidden"></select>
 
-  const container = document.getElementById("products");
-  container.innerHTML = "";
+<input id="city" placeholder="City">
+<input id="address1" placeholder="Address">
+<input id="zip" placeholder="ZIP Code">
 
-  if (!data.result || data.result.length === 0) {
-    container.innerHTML = "لا يوجد منتجات.";
-    return;
-  }
+<div id="tax-number-container" class="hidden">
+  <input id="tax_number" placeholder="">
+</div>
 
-  data.result.forEach(item => {
-    container.innerHTML += `
-      <div class="product">
-        <h3>${item.name}</h3>
-        <img src="${item.thumbnail_url}" alt="">
-      </div>
-    `;
-  });
-}
+<h3>Order Summary</h3>
+<button onclick="calculate()">Calculate Shipping & Tax</button>
 
-loadProducts();
-</script>
+<p id="summary"></p>
 
+<h3>Finalize Order</h3>
+<button onclick="createOrder()">Create Order</button>
+
+<p id="order-result"></p>
+
+<script src="script.js"></script>
 </body>
 </html>
