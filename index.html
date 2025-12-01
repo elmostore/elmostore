@@ -1,46 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <title>My Printful Store</title>
-  <style>
-    body { font-family: Arial; max-width: 600px; margin: auto; }
-    input, select { width: 100%; padding: 10px; margin: 8px 0; }
-    button { padding: 12px; width: 100%; background: black; color: white; border: none; }
-    .hidden { display: none; }
-  </style>
+  <meta charset="UTF-8">
+  <title>Countries Proxy Example</title>
 </head>
 <body>
 
-<h2>Complete Your Order</h2>
+<h2>Select Country</h2>
 
-<h3>Customer Info</h3>
-<input id="name" placeholder="Full Name">
-<input id="email" placeholder="Email">
-<input id="phone" placeholder="Phone">
+<select id="country">
+  <option>Loading...</option>
+</select>
 
-<h3>Address</h3>
-<select id="country"></select>
-<select id="state" class="hidden"></select>
+<script>
+async function loadCountries() {
+  try {
+    const res = await fetch("/.netlify/functions/countries");
+    const data = await res.json();
 
-<input id="city" placeholder="City">
-<input id="address1" placeholder="Address">
-<input id="zip" placeholder="ZIP Code">
+    const countries = data.result;
+    const select = document.getElementById("country");
+    select.innerHTML = "";
 
-<div id="tax-number-container" class="hidden">
-  <input id="tax_number" placeholder="">
-</div>
+    countries.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.code;
+      opt.textContent = c.name;
+      select.appendChild(opt);
+    });
+  } catch (error) {
+    document.getElementById("country").innerHTML =
+      "<option>Error loading</option>";
+  }
+}
 
-<h3>Order Summary</h3>
-<button onclick="calculate()">Calculate Shipping & Tax</button>
+loadCountries();
+</script>
 
-<p id="summary"></p>
-
-<h3>Finalize Order</h3>
-<button onclick="createOrder()">Create Order</button>
-
-<p id="order-result"></p>
-
-<script src="script.js"></script>
 </body>
 </html>
