@@ -1,7 +1,8 @@
 export default async (req, res) => {
   const token = process.env.PRINTFUL_TOKEN;
+  //https://api.printful.com/countries /v2/
 
-  const response = await fetch("https://api.printful.com/v2/countries", {
+  const response = await fetch("https://api.printful.com/countries", {
     headers: { Authorization: `Bearer ${token}` }
   });
 
