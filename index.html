@@ -2,11 +2,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Countries Proxy Example</title>
+  <title>Countries via Netlify</title>
 </head>
 <body>
 
-<h2>Select Country</h2>
+<h2>Select a Country</h2>
 
 <select id="country">
   <option>Loading...</option>
@@ -14,24 +14,18 @@
 
 <script>
 async function loadCountries() {
-  try {
-    const res = await fetch("/.netlify/functions/countries");
-    const data = await res.json();
+  const res = await fetch("/.netlify/functions/countries");
+  const data = await res.json();
 
-    const countries = data.result;
-    const select = document.getElementById("country");
-    select.innerHTML = "";
+  const select = document.getElementById("country");
+  select.innerHTML = "";
 
-    countries.forEach(c => {
-      const opt = document.createElement("option");
-      opt.value = c.code;
-      opt.textContent = c.name;
-      select.appendChild(opt);
-    });
-  } catch (error) {
-    document.getElementById("country").innerHTML =
-      "<option>Error loading</option>";
-  }
+  data.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c.code;
+    opt.textContent = c.name;
+    select.appendChild(opt);
+  });
 }
 
 loadCountries();
