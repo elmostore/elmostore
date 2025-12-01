@@ -1,11 +1,10 @@
 export default async (req, res) => {
-  const token = process.env.PRINTFUL_TOKEN;
-  //https://api.printful.com/countries /v2/
+  try {
+    const result = await fetch("https://api.printful.com/countries");
+    const json = await result.json();
 
-  const response = await fetch("https://api.printful.com/countries", {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-
-  const json = await response.json();
-  res.status(200).json(json.result.countries);
+    res.status(200).json(json);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to load countries" });
+  }
 };
