@@ -27,15 +27,23 @@ async function loadCountries() {
   const res = await fetch("/.netlify/functions/countries");
   const data = await res.json();
 
-  const datalist = document.getElementById("countries");
-  datalist.innerHTML = "";
+  //const datalist = document.getElementById("countries");
+  //datalist.innerHTML = "";
 
-  data.forEach(c => {
+	              const datalistCountries = document.getElementById("countries");
+                    data.forEach(function(country) {
+                    const option = document.createElement("option");
+                    option.value = country.name;
+					option.textContent = country.name;	
+                    datalistCountries.appendChild(option);  });
+
+
+ /* data.forEach(c => {
     const opt = document.createElement("option");
     opt.value = c.code;
     opt.textContent = c.name;
     datalist.appendChild(opt);
-  });
+  });*/
 }
 
 loadCountries();
