@@ -30,12 +30,13 @@ async function loadCountries() {
   //const datalist = document.getElementById("countries");
   //datalist.innerHTML = "";
 
-	              const datalistCountries = document.getElementById("countries");
-                    data.forEach(country => {
-                    const option = document.createElement("option");
-                    option.value = country.name;
-					option.textContent = country.name;	
-                    datalistCountries.appendChild(option);  });
+	              const datalist = document.getElementById("countries");
+                    data.forEach(c => {
+                    const opt = document.createElement("opt");
+                    opt.value = c.code;
+					opt.textContent = c.name;	
+                    datalist.appendChild(opt);  
+					});
 
 
  /* data.forEach(c => {
