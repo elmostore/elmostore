@@ -24,7 +24,7 @@
 
 <script>
 async function loadCountries() {
-  const res = await fetch("/.netlify/functions/countries");
+  const res = await fetch("/.netlify/functions/countries.js");
   const data = await res.json();
 
   //const datalist = document.getElementById("countries");
