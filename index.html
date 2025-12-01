@@ -30,8 +30,8 @@ async function loadCountries() {
   //const datalist = document.getElementById("countries");
   //datalist.innerHTML = "";
 
-	              const datalistCountries = document.getElementById("country");
-                    data.forEach(function(country) {
+	              const datalistCountries = document.getElementById("countries");
+                    data.forEach(country => {
                     const option = document.createElement("option");
                     option.value = country.name;
 					option.textContent = country.name;	
