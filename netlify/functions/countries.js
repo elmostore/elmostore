@@ -1,6 +1,6 @@
 export default async (req, res) => {
   try {
-    const result = await fetch("https://api.printful.com/countries");
+    const result = await fetch("https://restcountries.com/v3.1/all");
     const json = await result.json();
 
     res.status(200).json(json);
