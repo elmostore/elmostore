@@ -7,24 +7,34 @@
 <body>
 
 <h2>Select a Country</h2>
+  <label>Destination country</label>
+            <input list="countries" id="country" placeholder="Type or choose" autocomplete="off" 
+			pattern="United States|Canada|United Kingdom|Germany|France|Italy|Spain|Australia|New Zealand|Japan|China|Brazil|Mexico|
+			|India|Russia|South Korea|Singapore|United Arab Emirates|Saudi Arabia|South Africa|Netherlands|Belgium|Sweden|Norway|Finland|
+			|Denmark|Poland|Austria|Switzerland|Ireland|Portugal|Czech Republic|Hungary|Greece|Algeria|Morocco|Tunisia|Egypt|Turkey|Qatar|
+			|Kuwait|Bahrain|Oman|Jordan|Lebanon|Nigeria|Kenya|Ghana|Ethiopia|Ivory Coast|Senegal|Tanzania|Malaysia|Indonesia|Philippines|
+			|Thailand|Vietnam|Bangladesh|Pakistan|Sri Lanka|Chile|Argentina|Colombia|Peru|Uruguay|Paraguay|Ecuador|Bolivia|Iceland|
+			|Ukraine|Serbia|Croatia|Romania|Slovakia|Slovenia|Estonia|Latvia|Lithuania|Luxembourg|Malta|Cyprus|Monaco|Andorra|Panama|Costa Rica|
+			|Honduras|Guatemala|Dominican Republic|Puerto Rico|Bahamas|Barbados|Fiji|Nepal|Cambodia|Laos|Mongolia|Kazakhstan|Uzbekistan"required/>
+            <datalist id="countries"></datalist>
 
-<select id="country">
+<!--<select id="country">
   <option>Loading...</option>
-</select>
+</select>-->
 
 <script>
 async function loadCountries() {
   const res = await fetch("/.netlify/functions/countries");
   const data = await res.json();
 
-  const select = document.getElementById("country");
-  select.innerHTML = "";
+  const datalist = document.getElementById("countries");
+  datalist.innerHTML = "";
 
   data.forEach(c => {
     const opt = document.createElement("option");
     opt.value = c.code;
     opt.textContent = c.name;
-    select.appendChild(opt);
+    datalist.appendChild(opt);
   });
 }
 
