@@ -1,15 +1,137 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Countries</title>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   
+    <meta name="generator" content="CoffeeCup HTML Editor (www.coffeecup.com)">
+    <meta name="dcterms.created" content="Mon, 01 Sep 2025 13:10:23 GMT">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title></title>
+   <style>
+body {    background: hsla(10, 5%, 70%, 1);   color: hsla(210, 0%, 10%, 0.9);}
+ .container { 
+	width:90%;
+	margin: 0 auto; 
+	padding: 20px;
+    display: grid; 
+	gap: 10px; 
+	grid-template-columns: 1.3fr .7fr; 
+	align-items: start; }
+.form {
+  background: hsla(210, 30%, 100%, 1);
+  padding:50px;
+  border-radius: 16px; } 
+.summary {
+  background: hsla(210, 30%, 100%, 1);
+  padding: 50px;
+  border-radius: 16px;}
+input, textarea, select {  width: 100%;  padding: 15px;  margin-top: 15px;  border-radius: 8px;
+                          border: none;  outline: none; background-color:hsla(10, 5%, 90%, 1);}
+input:focus, select:focus, textarea:focus { border-color: var(--accent-2); box-shadow: 0 0 0 3px hsla(210, 50%, 50%, 1); }
+.pill { display:inline-flex;gap:8px; align-items:center; padding: 10px 14px;border:1px dashed hsla(10, 5%, 20%, 1);border-radius: 999px;font-size: 13px;color: hsla(10, 5%, 0%, 1); }
+.hidden { display: none; }
+
+@media (max-width: 1300px) { .container { grid-template-columns: 1fr; }
+
+   </style>
 </head>
-<body>
-
-<h2>Countries from Printful (Secure)</h2>
-
-<select id="countries"></select>
-
+<body> 
+<main class="container">
+<!-- Left side: Form -->
+<section class="form">
+  
+    <h2>Enter Your Information</h2>
+               <!-- Netlify will detect this form by name + data-netlify attribute -->
+       <form id="orderForm" name="product1-form" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+          <label>Full Name</label>
+            <input type="text" id="fullName" placeholder="Jhon cina" required>
+          <label>email</label>
+            <input type="text" id="email"  placeholder="example@gmail.com" required>
+          <label>Phone</label>
+            <input id="phone" placeholder="+1 555 555 555" />
+          <!-- datalist lets user type any country, with suggestions -->
+          <label>Destination country</label>
+            <input list="countries" id="country" placeholder="Type or choose" autocomplete="off" 
+			pattern="United States|Canada|United Kingdom|Germany|France|Italy|Spain|Australia|New Zealand|Japan|China|Brazil|Mexico|
+			|India|Russia|South Korea|Singapore|United Arab Emirates|Saudi Arabia|South Africa|Netherlands|Belgium|Sweden|Norway|Finland|
+			|Denmark|Poland|Austria|Switzerland|Ireland|Portugal|Czech Republic|Hungary|Greece|Algeria|Morocco|Tunisia|Egypt|Turkey|Qatar|
+			|Kuwait|Bahrain|Oman|Jordan|Lebanon|Nigeria|Kenya|Ghana|Ethiopia|Ivory Coast|Senegal|Tanzania|Malaysia|Indonesia|Philippines|
+			|Thailand|Vietnam|Bangladesh|Pakistan|Sri Lanka|Chile|Argentina|Colombia|Peru|Uruguay|Paraguay|Ecuador|Bolivia|Iceland|
+			|Ukraine|Serbia|Croatia|Romania|Slovakia|Slovenia|Estonia|Latvia|Lithuania|Luxembourg|Malta|Cyprus|Monaco|Andorra|Panama|Costa Rica|
+			|Honduras|Guatemala|Dominican Republic|Puerto Rico|Bahamas|Barbados|Fiji|Nepal|Cambodia|Laos|Mongolia|Kazakhstan|Uzbekistan"required/>
+            <datalist id="countries"></datalist>
+			
+			<div id="ST">
+          <label>State/Province</label>
+                <input list="usaStatesList" id="usaState" placeholder="State / Province"  class="hidden" 
+				 pattern="Alabama|Alaska|Arizona|Arkansas|California|Colorado|Connecticut|Delaware|Florida|Georgia|Hawaii|Idaho|Illinois|Indiana|Iowa|Kansas|
+                          |Kentucky|Louisiana|Maine|Maryland|Massachusetts|Michigan|Minnesota|Mississippi|Missouri|Montana|Nebraska|Nevada|NewHampshire|NewJersey|
+                          |NewMexico|NewYork|NorthCarolina|NorthDakota|Ohio|Oklahoma|Oregon|Pennsylvania|RhodeIsland|SouthCarolina|SouthDakota|Tennessee|Texas|Utah|
+                          |Vermont|Virginia|Washington|WestVirginia|Wisconsin|Wyoming" required>
+                 <datalist id="usaStatesList"></datalist>
+			
+			<input list="ausStatesList" id="ausState" name="ausState" placeholder="Choose state..aus." class="hidden" required>
+            <datalist id="ausStatesList"></datalist>
+	        
+			<input  id="WorldStates" name="WorldStates" placeholder="Choose state.w." class="hidden" required>
+           </div>    
+		
+          <label>City</label>
+            <input id="city" placeholder="City" />
+          <label hidden="">Variant</label> <select id="variant" hidden="" ><option value="mug11|11oz Mug|100.00">11oz Mug – $12.00</option>   <!--<option value="mug15|15oz Mug|14.50">15oz Mug – $14.50</option>  <option value="cupInsulated|Insulated Tumbler 20oz|22.00">Insulated Tumbler 20oz – $22.00</option>-->
+          </select>
+          
+          <div class="field">
+          <label>Quantity</label>
+          <input type="number" id="qty" min="1" value="1" />
+          </div>
+			   <button type="submit">Submit</button>				  
+        </form>
+<!--	div style="display:flex; gap:10px; flex-wrap: wrap;"><button class="btn btn-ghost" id="recalc">Recalculate</button><button class="btn btn-primary" id="addToCart">Add to Cart</button> PayPal button renders here (requires internet + client id) -->
+</section>				   
+<!-- Right side: Summary + PayPal -->
+<aside class="summary" >
+    <div style="display:flex; align-items:center; justify-content: space-between; margin-bottom: 8px;">
+      <div style="font-weight:800; font-size:18px;">Order summary</div>
+      <div class="pill" id="regionPill">Region: —</div>
+    </div>
+    <div id="summary">
+      <p><strong>Full Name:</strong> <span id="sName"></span></p>
+      <p><strong>Email:</strong> <span id="sEmail"></span></p>
+      <p><strong>Phone:</strong> <span id="sPhone"></span></p>
+      <p><strong>Address:</strong> <span id="sCountry"></span> 
+      <span id="sState"></span>
+      <span id="sCity"></span>
+      </p>
+    </div>
+   <div class="pill">
+     <div class="line"><span>Item price</span> <span id="priceItem">$0.00</span></div>
+     <div class="line"><span>Subtotal</span> <span id="subtotal">$0.00</span></div>
+     <div class="line"><span>Shipping</span> <span id="shipping">$0.00</span></div>
+     <div class="line"><span>Tax/Vat</span> <span id="tax">$0.00</span></div>
+   </div>
+								 <br /><br />
+    <div class="pill" style="display:flex; align-items:center; justify-content: space-between;  ">
+      <span  style="font-size:30px;">Total :</span> 
+      <span class="pill" id="total" style="font-size:30px;">$0.00</span>
+    </div>
+	<br />
+	<div id="paypal-container"></div>
+		<!-- PayPal button -->
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">        
+        <input type="hidden" name="business" value="elmouafek94@gmail.com">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="hidden" name="item_name" id="paypalItem" value="Custom Order">
+        <input type="hidden" name="amount" id="paypalAmount" value="0">
+        <button type="submit" class="paypal-btn">Buy Now</button>
+		</form>
+		<br />
+		<div class="pill" id="deliveryMessage"></div>
+</aside>
+</main>
 <script>
 async function loadCountries() {
   const res = await fetch("/.netlify/functions/countries");
