@@ -75,7 +75,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--accent-2); box-s
 			<input list="ausStatesList" id="ausState" name="ausState" placeholder="Choose state..aus." class="hidden" required>
             <datalist id="ausStatesList"></datalist>
 	        
-			<input  id="WorldStates" name="WorldStates" placeholder="Choose state.w." class="hidden" required>
+			<input  id="WorldStates" name="WorldStates" placeholder="Choose state.w."  required>
+				<datalist id="StatesList"></datalist>
            </div>    
 		
           <label>City</label>
@@ -148,6 +149,22 @@ async function loadCountries() {
 }
 
 loadCountries();
+
+	async function loads() {
+  const res = await fetch("/.netlify/functions/states");
+  const dataS = await res.json();
+
+  const selectS = document.getElementById("StatesList");
+
+  data.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c.name;
+    opt.textContent = c.name;
+    selectS.appendChild(opt);
+  });
+}
+
+loads();
 </script>
 
 </body>
