@@ -1,5 +1,5 @@
 export async function handler() {
-  const res = await fetch("https://api.printful.com/countries", {
+  const res = await fetch("https://api.printful.com/v2/countries", {
     headers: {
       Authorization: "Bearer " + process.env.PRINTFUL_TOKEN
     }
