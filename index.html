@@ -1,43 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Countries Example</title>
-<style>
-  body { font-family: Arial; padding: 20px; }
-  select { padding: 10px; width: 300px; }
-</style>
+<title>Countries</title>
 </head>
 <body>
 
-<h2>Load Countries (Working Example)</h2>
+<h2>Countries from Printful (Secure)</h2>
 
-<select id="countries">
-  <option>Loading countries...</option>
-</select>
+<select id="countries"></select>
 
 <script>
-// Fetch countries from RESTCountries API (CORS enabled)
-fetch("https://restcountries.com/v3.1/all")
-  .then(res => res.json())
-  .then(data => {
-      const select = document.getElementById("countries");
-      select.innerHTML = ""; // clear old text
+async function loadCountries() {
+  const res = await fetch("/.netlify/functions/countries");
+  const data = await res.json();
 
-      data.sort((a, b) => a.name.common.localeCompare(b.name.common));
+  const select = document.getElementById("countries");
 
-      data.forEach(country => {
-          const option = document.createElement("option");
-          option.value = country.cca2;
-          option.textContent = country.name.common;
-          select.appendChild(option);
-      });
-  })
-  .catch(err => {
-      document.getElementById("countries").innerHTML =
-        "<option>Error loading countries</option>";
-      console.error(err);
+  data.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c.code;
+    opt.textContent = c.name;
+    select.appendChild(opt);
   });
+}
+
+loadCountries();
 </script>
 
 </body>
